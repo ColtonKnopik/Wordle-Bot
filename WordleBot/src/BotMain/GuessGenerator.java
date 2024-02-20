@@ -19,16 +19,18 @@ public class GuessGenerator {
         int count = 0;
         String curGuess = dictionary.get(count);
 
-        while(hasRepeatLetters(curGuess))
-        {
+        while (hasRepeatLetters(curGuess) && count < dictionary.size() - 1) {
             count++;
             curGuess = dictionary.get(count);
-            if(count >= dictionary.size())
-                break;
+        }
+
+        if (hasRepeatLetters(curGuess)) {
+            curGuess = dictionary.get(0);
         }
 
         return curGuess;
     }
+
 
     public void reviseTime(){
 
@@ -62,23 +64,17 @@ public class GuessGenerator {
     }
 
     private boolean hasRepeatLetters(String word) {
-        // Create a boolean array to store whether a letter has been encountered before
         boolean[] encountered = new boolean[256]; // Assuming ASCII characters
 
-        // Iterate through each character in the word
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
 
-            // If the character has been encountered before, return true
             if (encountered[c]) {
                 return true;
             }
-
-            // Mark the character as encountered
             encountered[c] = true;
         }
 
-        // If no repeating characters are found, return false
         return false;
     }
 

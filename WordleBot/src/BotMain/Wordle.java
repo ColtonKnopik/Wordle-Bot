@@ -17,7 +17,7 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        targetWord = "price";
+        targetWord = "fleet";
         //targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
 
@@ -43,7 +43,7 @@ public class Wordle {
             }
         }
 
-        if (attempts >= 6)
+        if (attempts > 6)
             System.out.println("I was unable to guess the word correctly");
     }
 
