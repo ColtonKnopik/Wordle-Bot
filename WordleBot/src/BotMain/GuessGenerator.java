@@ -46,6 +46,9 @@ public class GuessGenerator {
             for(char letter : guess.toCharArray()){
                 Wordle.reviseDictionaryNoLetter(dictionary, letter);
             }
+
+            dictionary.remove(guess);
+            System.out.println("dictionary size: " + dictionary.size());
     }
 
 

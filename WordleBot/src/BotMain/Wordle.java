@@ -17,8 +17,8 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        targetWord = "fleet";
-        //targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
+        //targetWord = "quoth";
+        targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
 
         int attempts = 0;
@@ -59,23 +59,9 @@ public class Wordle {
         return dictionary;
     }
     public static void reviseDictionaryHasLetter(List<String> dictionary, char letter) {
-        Iterator<String> iterator = dictionary.iterator();
-        while (iterator.hasNext()) {
-            String word = iterator.next();
-            if (!word.contains(String.valueOf(letter))) {
-                iterator.remove();
-            }
-        }
-        System.out.println("Dictionary Length: " + dictionary.toArray().length);
+        dictionary.removeIf(word -> !word.contains(String.valueOf(letter)));
     }
     public static void reviseDictionaryNoLetter(List<String> dictionary, char letter) {
-        Iterator<String> iterator = dictionary.iterator();
-        while (iterator.hasNext()) {
-            String word = iterator.next();
-            if (word.contains(String.valueOf(letter))) {
-                iterator.remove();
-            }
-        }
-        System.out.println("Dictionary Length: " + dictionary.toArray().length);
+        dictionary.removeIf(word -> word.contains(String.valueOf(letter)));
     }
 }
