@@ -16,6 +16,21 @@ public class GuessGenerator {
     }
 
     public String generateGuess() {
+        int count = 0;
+        String curGuess = dictionary.get(count);
+
+        while(hasRepeatLetters(curGuess))
+        {
+            count++;
+            curGuess = dictionary.get(count);
+            if(count >= dictionary.size())
+                break;
+        }
+
+        return curGuess;
+    }
+
+    public void reviseTime(){
 
         if (containsLettersFromTarget(guess, targetWord)) {
             for(char letter : guess.toCharArray()){
@@ -29,9 +44,8 @@ public class GuessGenerator {
             for(char letter : guess.toCharArray()){
                 Wordle.reviseDictionaryNoLetter(dictionary, letter);
             }
-
-        return getRandomGuess();
     }
+
 
     private String getRandomGuess() {
         Random random = new Random();
@@ -44,6 +58,27 @@ public class GuessGenerator {
                 return true;
             }
         }
+        return false;
+    }
+
+    private boolean hasRepeatLetters(String word) {
+        // Create a boolean array to store whether a letter has been encountered before
+        boolean[] encountered = new boolean[256]; // Assuming ASCII characters
+
+        // Iterate through each character in the word
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+
+            // If the character has been encountered before, return true
+            if (encountered[c]) {
+                return true;
+            }
+
+            // Mark the character as encountered
+            encountered[c] = true;
+        }
+
+        // If no repeating characters are found, return false
         return false;
     }
 

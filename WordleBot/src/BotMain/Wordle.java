@@ -17,7 +17,7 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        targetWord = "ascot";
+        targetWord = "price";
         //targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
 
@@ -29,6 +29,7 @@ public class Wordle {
             } else {
 
                 GuessGenerator guessGenerator = new GuessGenerator(dictionary, guess, targetWord);
+                guessGenerator.reviseTime();
                 guess = guessGenerator.generateGuess(); // Generate the next guess
             }
 
