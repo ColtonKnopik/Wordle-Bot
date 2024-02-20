@@ -3,6 +3,7 @@ package BotMain;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import BotMain.Alphabet;
 
 public class Wordle {
 
@@ -17,22 +18,17 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        targetWord = "quoth";
+        targetWord = "match";
         //targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
+        System.out.println("Possible words: " + dictionary.size());
 
         int attempts = 0;
+        GuessGenerator guessGenerator = new GuessGenerator(dictionary, null, targetWord); // Initialize guessGenerator outside the loop
+
         while (attempts < 6) {
-            if (attempts == 0) {
-                guess = "crane";
-
-            } else {
-
-                GuessGenerator guessGenerator = new GuessGenerator(dictionary, guess, targetWord);
-                guessGenerator.reviseTime();
-                guess = guessGenerator.generateGuess(); // Generate the next guess
-            }
-
+            guessGenerator.reviseTime();
+            String guess = guessGenerator.generateGuess(); // Generate the next guess
             attempts++;
             System.out.println("Guess " + attempts + ": " + guess);
 

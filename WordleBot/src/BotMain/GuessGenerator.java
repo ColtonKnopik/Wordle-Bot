@@ -16,23 +16,28 @@ public class GuessGenerator {
     }
 
     public String generateGuess() {
-        int count = 0;
-        String curGuess = dictionary.get(count);
+        int maxCommonality = Integer.MIN_VALUE;
+        String bestGuess = null;
 
-        while (hasRepeatLetters(curGuess) && count < dictionary.size() - 1) {
-            count++;
-            curGuess = dictionary.get(count);
+        for (String word : dictionary) {
+            int commonality = Alphabet.S.generateCommonality(word);
+
+            // Update best guess if current word has higher commonality
+            if (commonality > maxCommonality) {
+                maxCommonality = commonality;
+                bestGuess = word;
+            }
         }
 
-        if (hasRepeatLetters(curGuess)) {
-            curGuess = dictionary.get(0);
-        }
-
-        return curGuess;
+        this.guess = bestGuess;
+        return bestGuess;
     }
 
 
     public void reviseTime(){
+
+        if(guess == null)
+            return;
 
         if (containsLettersFromTarget(guess, targetWord)) {
             for(char letter : guess.toCharArray()){
@@ -54,9 +59,8 @@ public class GuessGenerator {
                 Wordle.reviseDictionaryNoLetter(dictionary, letter);
             }
 
-
             dictionary.remove(guess);
-            System.out.println("dictionary size: " + dictionary.size());
+            System.out.println("possible words: " + dictionary.size());
     }
 
 
@@ -99,6 +103,7 @@ public class GuessGenerator {
 
         return -1;
     }
+
 
 }
 
