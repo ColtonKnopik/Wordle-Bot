@@ -36,8 +36,15 @@ public class GuessGenerator {
 
         if (containsLettersFromTarget(guess, targetWord)) {
             for(char letter : guess.toCharArray()){
-                if (targetWord.contains(String.valueOf(letter)))
+
+                if (targetWord.contains(String.valueOf(letter))) {
+                    if (letterAtIndex(guess, targetWord) != -1) {
+                        int index = letterAtIndex(guess, targetWord);
+                        Wordle.reviseDictionaryHasLetterAtIndex(dictionary, guess.toCharArray()[index], index);
+                    }
                     Wordle.reviseDictionaryHasLetter(dictionary, letter);
+                }
+
                 else
                     Wordle.reviseDictionaryNoLetter(dictionary, letter);
             }
@@ -46,6 +53,7 @@ public class GuessGenerator {
             for(char letter : guess.toCharArray()){
                 Wordle.reviseDictionaryNoLetter(dictionary, letter);
             }
+
 
             dictionary.remove(guess);
             System.out.println("dictionary size: " + dictionary.size());
@@ -79,6 +87,17 @@ public class GuessGenerator {
         }
 
         return false;
+    }
+
+    private int letterAtIndex(String guess, String targetWord){
+
+        for(int i = 0; i < guess.length(); i ++){
+            if(guess.toCharArray()[i] == targetWord.toCharArray()[i]){
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 }

@@ -17,8 +17,8 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        //targetWord = "quoth";
-        targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
+        targetWord = "quoth";
+        //targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
 
         int attempts = 0;
@@ -42,9 +42,6 @@ public class Wordle {
                 break;
             }
         }
-
-        if (attempts > 6)
-            System.out.println("I was unable to guess the word correctly");
     }
 
     public static List<String> createDictionary() throws FileNotFoundException {
@@ -63,5 +60,15 @@ public class Wordle {
     }
     public static void reviseDictionaryNoLetter(List<String> dictionary, char letter) {
         dictionary.removeIf(word -> word.contains(String.valueOf(letter)));
+    }
+
+    public static void reviseDictionaryHasLetterAtIndex(List<String> dictionary, char letter, int index){
+        char[] word;
+        for(int i = 0; i < dictionary.size() - 1; i ++){
+            word = dictionary.get(i).toCharArray();
+            if(letter != word[index]){
+                dictionary.remove(i);
+            }
+        }
     }
 }
