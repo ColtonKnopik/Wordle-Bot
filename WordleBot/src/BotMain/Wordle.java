@@ -19,7 +19,7 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        //targetWord = "match";
+        //targetWord = "nixie";
         targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
         //System.out.println("Possible words: " + dictionary.size());
@@ -63,24 +63,12 @@ public class Wordle {
         dictionary.removeIf(word -> word.contains(String.valueOf(letter))); //removes every word with letter
     }
 
-    public static void reviseDictionaryHasLetterRightIndex(List<String> dictionary, char letter, int index){
-        char[] word;
-        for(int i = 0; i < dictionary.size() - 1; i ++){
-            word = dictionary.get(i).toCharArray();
-            if(letter != word[index]){
-                dictionary.remove(i);
-            }
-        }
+    public static void reviseDictionaryHasLetterRightIndex(List<String> dictionary, char letter, int index) {
+        dictionary.removeIf(word -> word.charAt(index) != letter);
     }
 
     public static void reviseDictionaryRemoveAtIndex(List<String> dictionary, char letter, int index){
-        char[] word;
-        for(int i = 0; i < dictionary.size() - 1; i ++){
-            word = dictionary.get(i).toCharArray();
-            if(letter == word[index]){
-                dictionary.remove(i);
-            }
-        }
+        dictionary.removeIf(word -> word.charAt(index) == letter);
     }
 
     public int getAttempts() {

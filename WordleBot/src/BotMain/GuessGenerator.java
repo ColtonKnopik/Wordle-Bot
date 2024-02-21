@@ -39,27 +39,25 @@ public class GuessGenerator {
         if(guess == null)
             return;
 
-        if (containsLettersFromTarget(guess, targetWord)) {
             for(char letter : guess.toCharArray()){
                 int index = findLetterIndex(letter, guess);
+
                 if (targetWord.contains(String.valueOf(letter))) {
-                    if (hasSameLetterAtIndex(guess, targetWord, index)) { //FIX THIS
+
+                    if (hasSameLetterAtIndex(guess, targetWord, index)) { //letter is in the correct spot (green)
                         Wordle.reviseDictionaryHasLetterRightIndex(dictionary, letter, index);
                     }
+
                     else {
-                        Wordle.reviseDictionaryHasLetterWrongIndex(dictionary, letter);
+                        Wordle.reviseDictionaryHasLetterWrongIndex(dictionary, letter); //letter in word in wrong spot (yellow)
                         Wordle.reviseDictionaryRemoveAtIndex(dictionary, guess.toCharArray()[index], index);
                     }
                 }
 
                 else
-                    Wordle.reviseDictionaryNoLetter(dictionary, letter);
+                    Wordle.reviseDictionaryNoLetter(dictionary, letter); // letter not in the word (grey)
             }
-        }
-        else
-            for(char letter : guess.toCharArray()){
-                Wordle.reviseDictionaryNoLetter(dictionary, letter);
-            }
+
         dictionary.remove(guess);
         //System.out.println("possible words: " + dictionary.size());
     }
