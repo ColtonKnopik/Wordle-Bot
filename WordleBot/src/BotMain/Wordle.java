@@ -9,6 +9,7 @@ public class Wordle {
 
     private String guess;
     private String targetWord;
+    private int attempts;
 
     public static void main(String args[]) throws Exception {
         List<String> dictionary = createDictionary();
@@ -18,13 +19,13 @@ public class Wordle {
 
     public void solveWordle(List<String> dictionary) {
         Random random = new Random();
-        targetWord = "match";
-        //targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
+        //targetWord = "match";
+        targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
-        System.out.println("Possible words: " + dictionary.size());
+        //System.out.println("Possible words: " + dictionary.size());
 
-        int attempts = 0;
         GuessGenerator guessGenerator = new GuessGenerator(dictionary, null, targetWord); // Initialize guessGenerator outside the loop
+        attempts = 0;
 
         while (attempts < 6) {
             guessGenerator.reviseTime();
@@ -37,6 +38,10 @@ public class Wordle {
                 System.out.println("Wordle solved in " + attempts + " attempts!");
                 break;
             }
+        }
+
+        if(attempts >= 6){
+            System.out.println("failed to guess word");
         }
     }
 
@@ -51,14 +56,14 @@ public class Wordle {
         }
         return dictionary;
     }
-    public static void reviseDictionaryHasLetter(List<String> dictionary, char letter) {
-        dictionary.removeIf(word -> !word.contains(String.valueOf(letter)));
+    public static void reviseDictionaryHasLetterWrongIndex(List<String> dictionary, char letter) {
+        dictionary.removeIf(word -> !word.contains(String.valueOf(letter))); //removes every word without letter
     }
     public static void reviseDictionaryNoLetter(List<String> dictionary, char letter) {
-        dictionary.removeIf(word -> word.contains(String.valueOf(letter)));
+        dictionary.removeIf(word -> word.contains(String.valueOf(letter))); //removes every word with letter
     }
 
-    public static void reviseDictionaryHasLetterAtIndex(List<String> dictionary, char letter, int index){
+    public static void reviseDictionaryHasLetterRightIndex(List<String> dictionary, char letter, int index){
         char[] word;
         for(int i = 0; i < dictionary.size() - 1; i ++){
             word = dictionary.get(i).toCharArray();
@@ -66,5 +71,19 @@ public class Wordle {
                 dictionary.remove(i);
             }
         }
+    }
+
+    public static void reviseDictionaryRemoveAtIndex(List<String> dictionary, char letter, int index){
+        char[] word;
+        for(int i = 0; i < dictionary.size() - 1; i ++){
+            word = dictionary.get(i).toCharArray();
+            if(letter == word[index]){
+                dictionary.remove(i);
+            }
+        }
+    }
+
+    public int getAttempts() {
+        return attempts;
     }
 }

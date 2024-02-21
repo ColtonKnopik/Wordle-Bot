@@ -41,13 +41,15 @@ public class GuessGenerator {
 
         if (containsLettersFromTarget(guess, targetWord)) {
             for(char letter : guess.toCharArray()){
-
+                int index = findLetterIndex(letter, guess);
                 if (targetWord.contains(String.valueOf(letter))) {
-                    if (letterAtIndex(guess, targetWord) != -1) {
-                        int index = letterAtIndex(guess, targetWord);
-                        Wordle.reviseDictionaryHasLetterAtIndex(dictionary, guess.toCharArray()[index], index);
+                    if (hasSameLetterAtIndex(guess, targetWord, index)) { //FIX THIS
+                        Wordle.reviseDictionaryHasLetterRightIndex(dictionary, letter, index);
                     }
-                    Wordle.reviseDictionaryHasLetter(dictionary, letter);
+                    else {
+                        Wordle.reviseDictionaryHasLetterWrongIndex(dictionary, letter);
+                        Wordle.reviseDictionaryRemoveAtIndex(dictionary, guess.toCharArray()[index], index);
+                    }
                 }
 
                 else
@@ -58,9 +60,8 @@ public class GuessGenerator {
             for(char letter : guess.toCharArray()){
                 Wordle.reviseDictionaryNoLetter(dictionary, letter);
             }
-
-            dictionary.remove(guess);
-            System.out.println("possible words: " + dictionary.size());
+        dictionary.remove(guess);
+        //System.out.println("possible words: " + dictionary.size());
     }
 
 
@@ -93,16 +94,34 @@ public class GuessGenerator {
         return false;
     }
 
-    private int letterAtIndex(String guess, String targetWord){
+    private boolean hasSameLetterAtIndex(String guess, String targetWord, int index){
 
-        for(int i = 0; i < guess.length(); i ++){
-            if(guess.toCharArray()[i] == targetWord.toCharArray()[i]){
+        if(guess.toCharArray()[index] == targetWord.toCharArray()[index]){
+            return true;
+        }
+        return false;
+    }
+
+    private int findLetterIndex(char letter, String word){
+
+        for(int i = 0; i < word.length(); i++){
+            if(word.toCharArray()[i] == letter)
+                return i;
+        }
+
+        System.out.println(letter + " is not in " + word);
+        return -1;
+    }
+
+    private int indexAtLetter(String word, char letter){
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == letter) {
                 return i;
             }
         }
-
         return -1;
     }
+
 
 
 }
