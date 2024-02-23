@@ -25,10 +25,10 @@ public class WordleTest {
         System.out.println("Average attempts to solve after " + numberOfGames + " games: " + averageAttempts);
     }
 
-
     private int runGameAndGetAttempts(Wordle wordle) throws FileNotFoundException {
         List<String> dictionary = Wordle.createDictionary();
-        wordle.solveWordle(dictionary);
+        String targetWord = wordle.createTargetWord(dictionary);
+        wordle.solveWordle(dictionary, targetWord);
         return wordle.getAttempts();
     }
 }

@@ -6,30 +6,34 @@ import java.util.*;
 import BotMain.Alphabet;
 
 public class Wordle {
-
     private String guess;
-    private String targetWord;
+    private static String targetWord;
     private int attempts;
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         List<String> dictionary = createDictionary();
         Wordle wordle = new Wordle();
-        wordle.solveWordle(dictionary);
+
+        wordle.createTargetWord(dictionary);
+        wordle.solveWordle(dictionary, targetWord);
     }
 
-    public void solveWordle(List<String> dictionary) {
+    public String createTargetWord(List<String> dictionary){
         Random random = new Random();
-        //targetWord = "nixie";
+        //targetWord = "quoth";
         targetWord = dictionary.get(random.nextInt(dictionary.size())); // Pick a random word from the dictionary
         System.out.println("Target Word: " + targetWord);
         //System.out.println("Possible words: " + dictionary.size());
+        return targetWord;
+    }
 
-        GuessGenerator guessGenerator = new GuessGenerator(dictionary, null, targetWord); // Initialize guessGenerator outside the loop
+    public void solveWordle(List<String> dictionary, String targetWord) {
         attempts = 0;
 
         while (attempts < 6) {
-            guessGenerator.reviseTime();
+            GuessGenerator guessGenerator = new GuessGenerator(dictionary, guess); // Initialize guessGenerator outside the loop
             String guess = guessGenerator.generateGuess(); // Generate the next guess
+            guessGenerator.reviseTime();
             attempts++;
             System.out.println("Guess " + attempts + ": " + guess);
 
@@ -56,6 +60,11 @@ public class Wordle {
         }
         return dictionary;
     }
+
+    public static boolean hasSameLetterAtIndex(String guess, int index){
+        return guess.toCharArray()[index] == targetWord.toCharArray()[index];
+    }
+
     public static void reviseDictionaryHasLetterWrongIndex(List<String> dictionary, char letter) {
         dictionary.removeIf(word -> !word.contains(String.valueOf(letter))); //removes every word without letter
     }
@@ -63,12 +72,16 @@ public class Wordle {
         dictionary.removeIf(word -> word.contains(String.valueOf(letter))); //removes every word with letter
     }
 
-    public static void reviseDictionaryHasLetterRightIndex(List<String> dictionary, char letter, int index) {
+    public static void reviseDictionaryHasLetterRightIndex(List<String> dictionary, char letter, int index) { //removes letters that dont have letter at index
         dictionary.removeIf(word -> word.charAt(index) != letter);
     }
 
-    public static void reviseDictionaryRemoveAtIndex(List<String> dictionary, char letter, int index){
+    public static void reviseDictionaryRemoveAtIndex(List<String> dictionary, char letter, int index){ //removes words that do have letter at index
         dictionary.removeIf(word -> word.charAt(index) == letter);
+    }
+
+    public static boolean targetContainsLetter(char letter) {
+        return targetWord.contains(String.valueOf(letter));
     }
 
     public int getAttempts() {
